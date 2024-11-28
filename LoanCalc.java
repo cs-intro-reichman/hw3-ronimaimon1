@@ -42,25 +42,25 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
-        double guess = loan / n;  // Initial guess (based on loan and number of periods)
-        double balance = endBalance(loan, rate, n, guess);
+    double guess = loan / n;  // Initial guess (loan / periods) is a better starting point
+    double balance = endBalance(loan, rate, n, guess);
 
-        // Set a max iteration limit to avoid too long execution time
-        int maxIterations = 10000;
+    // Set a max iteration limit to avoid too long execution time
+    int maxIterations = 10000;
 
-        // Brute force loop to find the correct periodical payment
-        while (Math.abs(balance) > epsilon && iterationCounter < maxIterations) {
-            guess += 10;  // Increment by a reasonable step (e.g., 10)
-            balance = endBalance(loan, rate, n, guess);
-            iterationCounter++;  // Count the number of iterations
-        }
+    // Brute force loop to find the correct periodical payment
+    while (Math.abs(balance) > epsilon && iterationCounter < maxIterations) {
+        guess += 0.01;  // Smaller increment to allow for finer search
+        balance = endBalance(loan, rate, n, guess);
+        iterationCounter++;  // Count the number of iterations
+    }
 
-        // If the loop finishes because of maxIterations, print a warning
-        if (iterationCounter >= maxIterations) {
-            System.out.println("Warning: Brute force search hit max iterations");
-        }
+    // If the loop finishes because of maxIterations, print a warning
+    if (iterationCounter >= maxIterations) {
+        System.out.println("Warning: Brute force search hit max iterations");
+    }
 
-        return guess;  // Return the estimated payment
+    return guess;  // Return the estimated payment
     }
     
     // Uses bisection search to compute an approximation of the periodical payment 
