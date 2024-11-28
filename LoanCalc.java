@@ -28,8 +28,11 @@ public class LoanCalc {
 	// Computes the ending balance of a loan, given the loan amount, the periodical
 	// interest rate (as a percentage), the number of periods (n), and the periodical payment.
 	private static double endBalance(double loan, double rate, int n, double payment) {	
-		// Replace the following statement with your code
-		return 0;
+		double balance = loan;
+        for (int i = 0; i < n; i++) {
+            balance = (balance - payment) * (1 + rate);  // Subtract payment, apply interest
+        }
+        return balance;
 	}
 	
 	// Uses sequential search to compute an approximation of the periodical payment
@@ -38,8 +41,18 @@ public class LoanCalc {
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
-		// Replace the following statement with your code
-		return 0;
+		iterationCounter = 0;
+        double guess = loan / n;  // Initial guess for the payment (no interest considered)
+        double tolerance = 0.01;  // Allowable error for the ending balance
+        double balance = endBalance(loan, rate, n, guess);
+        
+        while (balance > tolerance) {
+            guess += 10;  // Increment the guess by a small value
+            balance = endBalance(loan, rate, n, guess);
+            iterationCounter++;  // Count the number of iterations
+        }
+        
+        return guess;  // Return the estimated payment
     }
     
     // Uses bisection search to compute an approximation of the periodical payment 
@@ -48,7 +61,24 @@ public class LoanCalc {
 	// the number of periods (n), and epsilon, the approximation's accuracy
 	// Side effect: modifies the class variable iterationCounter.
     public static double bisectionSolver(double loan, double rate, int n, double epsilon) {  
-        // Replace the following statement with your code
-		return 0;
+		iterationCounter = 0;
+        double low = loan / n;  // Start with low estimate
+        double high = loan;     // Start with high estimate
+        double tolerance = 0.01;  // Allowable error for the ending balance
+        double guess = (low + high) / 2;  // Mid-point guess
+
+        // Loop until the difference between high and low is less than the tolerance
+        while (high - low > tolerance) {
+            double balance = endBalance(loan, rate, n, guess);
+            if (balance > 0) {
+                low = guess;  // If the balance is positive, the payment is too low
+            } else {
+                high = guess;  // If the balance is negative, the payment is too high
+            }
+            guess = (low + high) / 2;  // Recalculate the mid-point guess
+            iterationCounter++;  // Count the number of iterations
+        }
+
+        return guess;  // Return the estimated payment
     }
 }
