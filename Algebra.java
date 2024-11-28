@@ -7,7 +7,7 @@ public class Algebra {
 	public static void main(String args[]) {
 	    // Tests some of the operations
 	    System.out.println(plus(2,3));   // 2 + 3
-	    System.out.println(minus(7,2));  // 7 - 2
+	    System.out.println(minus(7,-2));  // 7 - 2
    		System.out.println(minus(2,7));  // 2 - 7
  		System.out.println(times(3,4));  // 3 * 4
    		System.out.println(plus(2,times(4,2)));  // 2 + 4 * 2
@@ -30,6 +30,10 @@ public class Algebra {
             result++;  // Add 1 to result for each increment of x2
             x2--;
         }
+		while (x2<0) {
+			result--;
+			x2++;
+		}
         return result;
 	}
 
@@ -40,6 +44,10 @@ public class Algebra {
             result--;  // Add 1 to result for each increment of x2
             x2--;
         }
+		while (x2<0) {
+			result++;
+			x2++;
+		}
         return result;
 	}
 
