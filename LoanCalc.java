@@ -42,12 +42,13 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
+		iterationCounter = 0;
         double guess = loan / n;  // Initial guess for the payment (no interest considered)
-        double tolerance = 0.01;  // Allowable error for the ending balance
+        double tolerance = 0.001;  // More precise tolerance for the ending balance
         double balance = endBalance(loan, rate, n, guess);
-        
-        while (balance > tolerance) {
-            guess += 10;  // Increment the guess by a small value
+
+        while (Math.abs(balance) > tolerance) {  // Terminate when the balance is close to zero
+            guess += 1;  // Smaller increment for more precision
             balance = endBalance(loan, rate, n, guess);
             iterationCounter++;  // Count the number of iterations
         }
@@ -64,7 +65,7 @@ public class LoanCalc {
 		iterationCounter = 0;
         double low = loan / n;  // Start with low estimate
         double high = loan;     // Start with high estimate
-        double tolerance = 0.01;  // Allowable error for the ending balance
+        double tolerance = 0.001;  // More precise tolerance for the ending balance
         double guess = (low + high) / 2;  // Mid-point guess
 
         // Loop until the difference between high and low is less than the tolerance
@@ -80,5 +81,5 @@ public class LoanCalc {
         }
 
         return guess;  // Return the estimated payment
-    }
+	}
 }
