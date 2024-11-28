@@ -28,11 +28,16 @@ public class LoanCalc {
 	// Computes the ending balance of a loan, given the loan amount, the periodical
 	// interest rate (as a percentage), the number of periods (n), and the periodical payment.
 	private static double endBalance(double loan, double rate, int n, double payment) {	
+		// Calculate monthly interest rate
+		double monthlyRate = rate / 100 / 12;
 		double balance = loan;
-        for (int i = 0; i < n; i++) {
-            balance = (balance - payment) * (1 + rate);  // Subtract payment, apply interest
-        }
-        return balance;
+		
+		// Loop over all periods to compute the remaining balance
+		for (int i = 0; i < n; i++) {
+			balance = balance * (1 + monthlyRate) - payment;
+		}
+		
+		return balance;
 	}
 	
 	// Uses sequential search to compute an approximation of the periodical payment
@@ -42,25 +47,27 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
-    double guess = loan / n;  // Initial guess (loan / periods) is a better starting point
-    double balance = endBalance(loan, rate, n, guess);
+    	double guess = loan / n;  // Initial guess (loan / periods) is a better starting point
+    	double balance = endBalance(loan, rate, n, guess);
+    	double stepSize = 0.1;  // Start with a reasonable step size to adjust payments
 
-    // Set a max iteration limit to avoid too long execution time
-    int maxIterations = 10000;
+    	// Brute force loop to find the correct periodical payment
+   		while (Math.abs(balance) > epsilon && iterationCounter < 10000) {
+        	guess += stepSize;  // Try to fine-tune the guess incrementally
+        	balance = endBalance(loan, rate, n, guess);
+        	iterationCounter++;  // Count the number of iterations
+        	// Dynamically adjust step size based on how close we are to the solution
+        	if (Math.abs(balance) < 100) {
+            	stepSize = 0.01;  // Reduce step size to refine the estimate
+        	}
+    	}
 
-    // Brute force loop to find the correct periodical payment
-    while (Math.abs(balance) > epsilon && iterationCounter < maxIterations) {
-        guess += 0.01;  // Smaller increment to allow for finer search
-        balance = endBalance(loan, rate, n, guess);
-        iterationCounter++;  // Count the number of iterations
-    }
+    	// If the loop finishes because of max iterations, print a warning
+    	if (iterationCounter >= 10000) {
+        	System.out.println("Warning: Brute force search hit max iterations");
+    	}
 
-    // If the loop finishes because of maxIterations, print a warning
-    if (iterationCounter >= maxIterations) {
-        System.out.println("Warning: Brute force search hit max iterations");
-    }
-
-    return guess;  // Return the estimated payment
+   		return guess;  // Return the estimated payment
     }
     
     // Uses bisection search to compute an approximation of the periodical payment 
