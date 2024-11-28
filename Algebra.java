@@ -7,7 +7,7 @@ public class Algebra {
 	public static void main(String args[]) {
 	    // Tests some of the operations
 	    System.out.println(plus(2,3));   // 2 + 3
-	    System.out.println(minus(7,2));  // 7 - 2
+	    System.out.println(minus(7,-2));  // 7 - 2
    		System.out.println(minus(2,7));  // 2 - 7
  		System.out.println(times(3,4));  // 3 * 4
    		System.out.println(plus(2,times(4,2)));  // 2 + 4 * 2
@@ -25,43 +25,81 @@ public class Algebra {
 
 	// Returns x1 + x2
 	public static int plus(int x1, int x2) {
-		// Replace the following statement with your code
-		return 0;
+		int result = x1;
+        while (x2 > 0) {
+            result++;  // Add 1 to result for each increment of x2
+            x2--;
+        }
+		while (x2<0) {
+			result--;
+			x2++;
+		}
+        return result;
 	}
 
 	// Returns x1 - x2
 	public static int minus(int x1, int x2) {
-		// Replace the following statement with your code
-		return 0;
+		int result = x1;
+        while (x2 > 0) {
+            result--;  // Add 1 to result for each increment of x2
+            x2--;
+        }
+		while (x2<0) {
+			result++;
+			x2++;
+		}
+        return result;
 	}
 
 	// Returns x1 * x2
 	public static int times(int x1, int x2) {
-		// Replace the following statement with your code
-		return 0;
+		int result = 0;
+        while (x2 > 0) {
+            result = plus(result, x1);  // Add x1 to result x2 times
+            x2--;
+        }
+		while (x2 < 0) {
+			result = minus(result, x1);
+			x2++;
+		}
+        return result;
 	}
 
 	// Returns x^n (for n >= 0)
 	public static int pow(int x, int n) {
-		// Replace the following statement with your code
-		return 0;
+		int result = 1;
+        while (n > 0) {
+            result = times(result, x);  // Multiply result by x, n times
+            n--;
+        }
+        return result;
 	}
 
 	// Returns the integer part of x1 / x2 
 	public static int div(int x1, int x2) {
-		// Replace the following statement with your code
-		return 0;
+		int count = 0;
+        while (x1 >= x2) {
+            x1 = minus(x1, x2);  // Subtract x2 from x1 until x1 is less than x2
+            count++;
+        }
+        return count;
 	}
 
 	// Returns x1 % x2
 	public static int mod(int x1, int x2) {
-		// Replace the following statement with your code
-		return 0;
+		while (x1 >= x2) {
+            x1 = minus(x1, x2);  // Subtract x2 from x1 until x1 is less than x2
+        }
+        return x1;  // The remaining value of x1 is the modulus
 	}	
 
 	// Returns the integer part of sqrt(x) 
 	public static int sqrt(int x) {
-		// Replace the following statement with your code
-		return 0;
-	}	  	  
+		int result = 0;
+        while (times(result, result) <= x) {
+            result++;  // Increment result until result^2 is greater than x
+        }
+        return minus(result, 1);  // The integer square root is one less than the current
+	}	  	 
+
 }
