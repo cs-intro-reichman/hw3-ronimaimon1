@@ -42,15 +42,15 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
-        double guess = loan / n;  // Initial guess for the payment (no interest considered)
-        double tolerance = 0.001;  // More precise tolerance for the ending balance
+        double guess = loan / n;  // Initial guess (based on loan and number of periods)
         double balance = endBalance(loan, rate, n, guess);
-        
+
         // Set a max iteration limit to avoid too long execution time
         int maxIterations = 10000;
 
-        while (Math.abs(balance) > tolerance && iterationCounter < maxIterations) {
-            guess += 10;  // Increase the increment for faster convergence
+        // Brute force loop to find the correct periodical payment
+        while (Math.abs(balance) > epsilon && iterationCounter < maxIterations) {
+            guess += 10;  // Increment by a reasonable step (e.g., 10)
             balance = endBalance(loan, rate, n, guess);
             iterationCounter++;  // Count the number of iterations
         }
@@ -72,12 +72,12 @@ public class LoanCalc {
 		iterationCounter = 0;
         double low = loan / n;  // Start with low estimate
         double high = loan;     // Start with high estimate
-        double tolerance = 0.001;  // More precise tolerance for the ending balance
         double guess = (low + high) / 2;  // Mid-point guess
+        double balance = endBalance(loan, rate, n, guess);
 
-        // Loop until the difference between high and low is less than the tolerance
-        while (high - low > tolerance) {
-            double balance = endBalance(loan, rate, n, guess);
+        // Loop until the difference between high and low is less than the epsilon tolerance
+        while (high - low > epsilon) {
+            balance = endBalance(loan, rate, n, guess);
             if (balance > 0) {
                 low = guess;  // If the balance is positive, the payment is too low
             } else {
