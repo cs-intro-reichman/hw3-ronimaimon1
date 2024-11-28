@@ -58,6 +58,10 @@ public class Algebra {
             result = plus(result, x1);  // Add x1 to result x2 times
             x2--;
         }
+		while (x2 < 0) {
+			result = minus(result, x1);
+			x2++;
+		}
         return result;
 	}
 
