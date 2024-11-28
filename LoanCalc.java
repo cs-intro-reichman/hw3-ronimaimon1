@@ -42,17 +42,24 @@ public class LoanCalc {
 	// Side effect: modifies the class variable iterationCounter.
     public static double bruteForceSolver(double loan, double rate, int n, double epsilon) {
 		iterationCounter = 0;
-		iterationCounter = 0;
         double guess = loan / n;  // Initial guess for the payment (no interest considered)
         double tolerance = 0.001;  // More precise tolerance for the ending balance
         double balance = endBalance(loan, rate, n, guess);
+        
+        // Set a max iteration limit to avoid too long execution time
+        int maxIterations = 10000;
 
-        while (Math.abs(balance) > tolerance) {  // Terminate when the balance is close to zero
-            guess += 1;  // Smaller increment for more precision
+        while (Math.abs(balance) > tolerance && iterationCounter < maxIterations) {
+            guess += 10;  // Increase the increment for faster convergence
             balance = endBalance(loan, rate, n, guess);
             iterationCounter++;  // Count the number of iterations
         }
-        
+
+        // If the loop finishes because of maxIterations, print a warning
+        if (iterationCounter >= maxIterations) {
+            System.out.println("Warning: Brute force search hit max iterations");
+        }
+
         return guess;  // Return the estimated payment
     }
     
