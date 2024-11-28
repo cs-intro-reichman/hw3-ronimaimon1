@@ -39,37 +39,32 @@ public class Anagram {
 				return false;
 			}
 	
-			// Check if each character in processedStr1 can be found in processedStr2
-			while (processedStr1.length() > 0) {
-				char c = processedStr1.charAt(0);
-				int index = -1;
-				// Find the character in processedStr2 (manually, no substring)
+			// Count the frequency of each character in both strings
+			for (char c = 'a'; c <= 'z'; c++) {
+				int count1 = 0;
+				int count2 = 0;
+				
+				// Count occurrences of 'c' in processedStr1
+				for (int i = 0; i < processedStr1.length(); i++) {
+					if (processedStr1.charAt(i) == c) {
+						count1++;
+					}
+				}
+				
+				// Count occurrences of 'c' in processedStr2
 				for (int i = 0; i < processedStr2.length(); i++) {
 					if (processedStr2.charAt(i) == c) {
-						index = i;
-						break;
+						count2++;
 					}
 				}
 	
-				if (index == -1) {
-					// If 'c' is not found in processedStr2, they are not anagrams
+				// If the counts don't match, they are not anagrams
+				if (count1 != count2) {
 					return false;
-				} else {
-					// Manually remove the character from processedStr2
-					String temp = "";
-					for (int i = 0; i < processedStr2.length(); i++) {
-						if (i != index) {
-							temp += processedStr2.charAt(i);
-						}
-					}
-					processedStr2 = temp;
 				}
-	
-				// Remove the character from processedStr1
-				processedStr1 = processedStr1.substring(1);
 			}
 	
-			// If we've removed all characters and no mismatch occurred, they are anagrams
+			// If all counts match, they are anagrams
 			return true;
 	}
 	   
